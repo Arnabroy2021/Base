@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>J.P. Morgan Onchain (Base) Quiz</title>
+<style>
+  body {
+    font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+    background: #f8f9fa;
+    color: #222;
+    max-width: 800px;
+    margin: 40px auto;
+    padding: 20px;
+  }
+  h1 {
+    text-align: center;
+    color: #0b63d6;
+  }
+  .question {
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 16px;
+    margin: 12px 0;
+  }
+  .options label {
+    display: block;
+    padding: 6px 10px;
+    border-radius: 6px;
+    cursor: pointer;
+  }
+  .options label:hover {
+    background: #eef4ff;
+  }
+  button {
+    margin-top: 16px;
+    padding: 10px 20px;
+    font-size: 15px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+  }
+  #checkBtn { background: #0b63d6; color: #fff; }
+  #resetBtn { background: #ccc; color: #000; margin-left: 10px; }
+  .correct { background: #d4edda; }
+  .incorrect { background: #f8d7da; }
+  #scoreBox {
+    font-weight: bold;
+    font-size: 18px;
+    margin-top: 20px;
+    text-align: center;
+  }
+</style>
+</head>
+<body>
+
+<h1>J.P. Morgan Onchain (Base) — Quiz</h1>
+<p style="text-align:center;">Test your knowledge about J.P. Morgan’s move on Base blockchain 🚀</p>
+
+<div id="quiz"></div>
+
+<div style="text-align:center;">
+  <button id="checkBtn">Check Answers</button>
+  <button id="resetBtn">Reset</button>
+</div>
+
+<p id="scoreBox"></p>
+
+<script>
+const quizData = [
+  {
+    q: "What is J.P. Morgan launching on Base?",
+    options: ["Stablecoin", "Deposit token (JPMD)", "NFT Collection", "Liquidity pool"],
+    correct: 1
+  },
+  {
+    q: "What does JPMD stand for?",
+    options: ["J.P. Morgan Digitalcoin", "J.P. Morgan Dollar", "J.P. Morgan Deposit token", "J.P. Morgan Derivative"],
+    correct: 2
+  },
+  {
+    q: "What is JPMD backed by?",
+    options: ["Bitcoin reserves", "1:1 by USD deposits", "Ethereum smart contracts", "Tokenized bonds"],
+    correct: 1
+  },
+  {
+    q: "Which blockchain is used for this pilot project?",
+    options: ["Ethereum mainnet", "Solana", "Base", "Polygon"],
+    correct: 2
+  },
+  {
+    q: "What is the purpose of launching JPMD on Base?",
+    options: ["To create a retail payment token", "To allow institutional clients to settle instantly and securely", "To fund crypto startups", "To replace SWIFT entirely"],
+    correct: 1
+  },
+  {
+    q: "Which J.P. Morgan division is leading the pilot?",
+    options: ["JPM Payments", "Kinexys by J.P. Morgan", "Chase Retail Banking", "Onyx Digital Assets"],
+    correct: 1
+  },
+  {
+    q: "What are some benefits of onchain payment rails?",
+    options: ["High fees and slow settlement", "Instant settlement and low cost", "Paper-based verification", "Weekly clearing"],
+    correct: 1
+  },
+  {
+    q: "How many global financial institutions are supported by Coinbase’s Crypto-as-a-Service platform?",
+    options: ["50+", "100+", "200+", "500+"],
+    correct: 2
+  },
+  {
+    q: "Which traditional systems does Base aim to improve upon?",
+    options: ["SWIFT, ACH, Fedwire", "VISA, MasterCard", "PayPal, Stripe", "IMF, World Bank"],
+    correct: 0
+  },
+  {
+    q: "Who can access JPMD currently?",
+    options: ["All retail users", "Only institutional clients", "NFT traders", "Government agencies only"],
+    correct: 1
+  }
+];
+
+const quizContainer = document.getElementById("quiz");
+const scoreBox = document.getElementById("scoreBox");
+
+function loadQuiz() {
+  quizContainer.innerHTML = "";
+  quizData.forEach((item, index) => {
+    const qDiv = document.createElement("div");
+    qDiv.className = "question";
+    qDiv.innerHTML = `<h3>Q${index + 1}. ${item.q}</h3>`;
+    const opts = document.createElement("div");
+    opts.className = "options";
+    item.options.forEach((opt, i) => {
+      const id = `q${index}_opt${i}`;
+      const label = document.createElement("label");
+      label.htmlFor = id;
+      label.innerHTML = `<input type="radio" name="q${index}" id="${id}" value="${i}"> ${opt}`;
+      opts.appendChild(label);
+    });
+    qDiv.appendChild(opts);
+    quizContainer.appendChild(qDiv);
+  });
+}
+loadQuiz();
+
+document.getElementById("checkBtn").onclick = function() {
+  let score = 0;
+  const questions = document.querySelectorAll(".question");
+  quizData.forEach((item, i) => {
+    const selected = document.querySelector(`input[name="q${i}"]:checked`);
+    questions[i].classList.remove("correct","incorrect");
+    if (selected) {
+      if (parseInt(selected.value) === item.correct) {
+        questions[i].classList.add("correct");
+        score++;
+      } else {
+        questions[i].classList.add("incorrect");
+      }
+    } else {
+      questions[i].classList.add("incorrect");
+    }
+  });
+  scoreBox.innerHTML = `✅ You scored ${score} / ${quizData.length}`;
+};
+
+document.getElementById("resetBtn").onclick = function() {
+  document.querySelectorAll("input[type=radio]").forEach(r => r.checked = false);
+  document.querySelectorAll(".question").forEach(q => q.classList.remove("correct","incorrect"));
+  scoreBox.textContent = "";
+};
+</script>
+
+</body>
+</html>
